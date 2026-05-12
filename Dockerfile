@@ -1,12 +1,15 @@
 FROM ubuntu:22.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Starting Ubuntu 24.04 official docker image has user ubuntu with UID/GID 1000
 # Remove the default ubuntu user to free up UID/GID 1000
 RUN userdel -r ubuntu 2>/dev/null || true
 
 # Install dependencies with disable root login for security reasons
 RUN apt-get update \
-    && apt-get install -y iproute2 iputils-ping openssh-server telnet sudo \
+    && apt-get install -y --no-install-recommends \
+    iproute2 iputils-ping openssh-server telnet sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && mkdir -p /run/sshd \
